@@ -5,10 +5,8 @@ Two AIs play against each other - one knows a concept, the other tries to guess 
 """
 
 import os
-import asyncio
 from typing import Optional, List, Dict, Any
 from openai import OpenAI
-import json
 
 
 class AIAkinator:
@@ -81,7 +79,7 @@ Be accurate and helpful in your responses. The other AI is trying to guess your 
         messages = [
             {
                 "role": "system",
-                "content": """You are playing Akinator as the guesser. Your goal is to figure out what concept the other AI is thinking of by asking strategic yes/no questions.
+                "content": """You are playing Akinator as the guesser. Your goal is to figure out what concept the other person is thinking of by asking strategic yes/no questions.
 
 Guidelines:
 - Ask clear, specific yes/no questions
@@ -118,7 +116,7 @@ Ask your next question:""",
         while self.question_count < self.max_questions:
             self.question_count += 1
 
-            print(f"\n📝 Question {self.question_count}:")
+            print(f"\n📝 Question {self.question_count}")
 
             # Guesser asks a question
             if self.stream:
@@ -185,12 +183,6 @@ def main():
     print(f"Concept: {result['concept']}")
     print(f"Success: {'✅ Yes' if result['success'] else '❌ No'}")
     print(f"Questions asked: {result['questions_asked']}")
-
-    # Save the conversation to a file
-    filename = f"akinator_game_{concept.replace(' ', '_')}.json"
-    with open(filename, "w") as f:
-        json.dump(result, f, indent=2)
-    print(f"💾 Conversation saved to: {filename}")
 
 
 if __name__ == "__main__":
